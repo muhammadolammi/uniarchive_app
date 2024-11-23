@@ -6,3 +6,9 @@ final signUPProvider =
   final authProvider = ref.read(authApiProvider);
   return await authProvider.signUp(params);
 });
+
+final signINProvider =
+    FutureProvider.family<String, SigninParams>((ref, params) async {
+  final authProvider = ref.read(authApiProvider);
+  return await authProvider.signIn(params);
+});

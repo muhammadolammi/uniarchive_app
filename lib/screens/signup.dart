@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uniarchive/apis/auth.dart';
@@ -9,8 +10,12 @@ import 'package:uniarchive/providers/faculties.dart';
 import 'package:uniarchive/providers/levels.dart';
 import 'package:uniarchive/providers/signupstates.dart';
 import 'package:uniarchive/providers/universities.dart';
+import 'package:uniarchive/screens/signinscreen.dart';
+import 'package:uniarchive/widgets/showsnackbar.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
+  static String routeId = 'signUpRoute';
+
   const SignUpScreen({super.key});
 
   @override
@@ -70,7 +75,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         ];
     final levelID = ref.watch(levelIDProvider);
 
-    //signup function
+    //signup params
     final SignupParams signupParams = SignupParams(
         email: emailController.text,
         firstName: firstNameController.text,
@@ -212,21 +217,43 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         .then((value) {
                       // Handle success
                       log("Sign-up successful: $value");
+                      showSnackBar(
+                          content: 'User created successfully',
+                          context: context);
+                      Navigator.pushNamed(context, SignInScreen.routeId);
                       // Navigate or display a success message if needed
                     }).catchError((error) {
-                      // Handle error
-                      throw ("$error");
-                      // Display an error message to the user
+                      // Check error type and show a user-friendly message
+                      if (error is DioException) {
+                        showSnackBar(
+                            content: 'Dio Error: ${error.message}',
+                            context: context);
+                      } else {
+                        showSnackBar(content: 'Error $error', context: context);
+                      }
                     });
                   },
-                  child: Text("Sign Up")),
-              const Row(
+                  child: const Text("Sign Up")),
+              const SizedBox(
+                height: 15,
+              ),
+              Row(
                 children: [
-                  const Text("Already have an account?"),
-                  SizedBox(
+                  const Text(
+                    "Already have an account?",
+                  ),
+                  const SizedBox(
                     width: 10,
                   ),
-                  const Text("Sign In"),
+                  GestureDetector(
+                      onTap: () {
+                        // Handle navigation or action here
+                        Navigator.pushNamed(context, SignInScreen.routeId);
+                      },
+                      child: const Text(
+                        "Sign In",
+                        style: TextStyle(color: Colors.blue),
+                      )),
                 ],
               )
             ],

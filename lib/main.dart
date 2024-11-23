@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uniarchive/consts.dart';
+import 'package:uniarchive/screens/homescreen.dart';
+import 'package:uniarchive/screens/signinscreen.dart';
 import 'package:uniarchive/screens/signup.dart';
 
 void main() {
-    runApp(const ProviderScope(child: MyApp()));
-
+  // set up dio
+  setupDio();
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,6 +18,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        HomeScreen.routeId: (context) => const HomeScreen(),
+        SignInScreen.routeId: (context) => const SignInScreen(),
+        SignUpScreen.routeId: (context) => const SignUpScreen(),
+      },
       debugShowCheckedModeBanner: false,
       title: 'Uni Archive',
       theme: ThemeData(
@@ -34,11 +43,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-        
       ),
-      // home: const HomeView(title: 'Aleemah MUMU'),
-            home: const SignUpScreen(),
-
     );
   }
 }

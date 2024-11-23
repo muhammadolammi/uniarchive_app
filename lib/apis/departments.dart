@@ -10,16 +10,13 @@ final departmentsApiProvider = Provider((ref) {
 
 class DepartmentsApi {
   Future<List<Map<String, dynamic>>> getDepartments(String facultyID) async {
-    final Uri url = Uri.parse('$baseUrl/departments/$facultyID');
     // log("api url $url");
     try {
-      final response = await Dio().get(
-        url.toString(),
-      );
+      final response = await dio.get("/departments/$facultyID");
       if (response.statusCode == 200) {
         final data = List<Map<String, dynamic>>.from(response.data);
         // log("Parsed data: $data");
-        if (data.length == 0) {
+        if (data.isEmpty) {
           return [
             {"name": "No department yet, add if you are the admin"}
           ];

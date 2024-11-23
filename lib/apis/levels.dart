@@ -10,12 +10,8 @@ final levelsApiProvider = Provider((ref) {
 
 class LevelsApi {
   Future<List<Map<String, dynamic>>> getLevels() async {
-    final Uri url = Uri.parse('$baseUrl/levels');
-    // log("api url $url");
     try {
-      final response = await Dio().get(
-        url.toString(),
-      );
+      final response = await dio.get("/levels");
       if (response.statusCode == 200) {
         final data = List<Map<String, dynamic>>.from(response.data);
         log("Parsed data: $data");

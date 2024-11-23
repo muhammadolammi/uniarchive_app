@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uniarchive/consts.dart';
+import 'package:uniarchive/models.dart';
 
 final authApiProvider = Provider((ref) {
   return AuthApi();
@@ -56,17 +57,69 @@ class SignupParams {
   }
 }
 
+class SigninParams {
+  final String email;
+
+  final String password;
+
+  // Constructor to initialize the fields
+  SigninParams({
+    required this.email,
+    required this.password,
+  });
+  // Optionally, you can add a method to convert the object to JSON (for API requests)
+  Map<String, dynamic> toJson() {
+    final data = {
+      "email": email,
+      "password": password,
+    };
+    return data;
+  }
+}
+
 class AuthApi {
   Future<String> signUp(SignupParams params) async {
-    final Uri url = Uri.parse('$baseUrl/signup');
-    log(params.toString());
     try {
-      final response = await Dio().post(url.toString(), data: params.toJson());
+      final response = await dio.post("/signup", data: params.toJson());
 
       log("user created succussfully");
       return response.toString();
     } on DioException catch (e) {
-      throw Exception('Error: ${e.response.toString()}');
+      throw Exception(e.response.toString());
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<String> signIn(SigninParams params) async {
+    try {
+      final response = await dio.post("/signin", data: params.toJson());
+
+      log("user logged in succussfully");
+      return response.toString();
+    } on DioException catch (e) {
+      throw Exception(e.response?.data['error']);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<User> validate() async {
+    // final Uri url = Uri.parse('$baseUrl/validate');
+
+    try {
+      final response =
+          await dio.post("/validate").timeout(const Duration(seconds: 10));
+      final data = Map<String, dynamic>.from(response.data);
+      // log(data.toString());
+      return User.fromJson(data);
+    } on DioException catch (e) {
+      log("here");
+      log(e.response.toString());
+      throw Exception(e.response?.data['error']);
+    } catch (e) {
+      log(e.toString());
+      throw Exception(e);
     }
   }
 }
