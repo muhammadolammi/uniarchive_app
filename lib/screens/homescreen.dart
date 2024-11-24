@@ -11,6 +11,7 @@ import 'package:uniarchive/providers/provider.dart';
 import 'package:uniarchive/screens/signinscreen.dart';
 import 'package:uniarchive/screens/signup.dart';
 import 'package:uniarchive/widgets/coursesdropdown.dart';
+import 'package:uniarchive/widgets/fileCard.dart';
 import 'package:uniarchive/widgets/profilecard.dart';
 import 'package:uniarchive/widgets/roundformfield.dart';
 
@@ -127,11 +128,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 hintText: "Search here...",
               ),
 
-              Center(
-                  child: Profilecard(
-                user: currentUser ?? User.emptyUser(),
-              )),
-              CoursesDropdown(),
+              // Center(
+              //     child: Profilecard(
+              //   user: currentUser ?? User.emptyUser(),
+              // )),
+              const CoursesDropdown(),
+              Column(
+                children: materials == null
+                    ? [
+                        const CircularProgressIndicator()
+                      ] // Show loading indicator while fetching materials
+                    : materials.isEmpty
+                        ? [
+                            const Text("No materials available")
+                          ] // If materials is empty
+                        : materials.map((material) {
+                            return Filecard(
+                                file:
+                                    material); // Assuming you want to show a file card for each material
+                          }).toList(),
+              ),
 
               //  TESTING BUTTONS
               // ElevatedButton(

@@ -14,7 +14,7 @@ class LevelsApi {
       final response = await dio.get("/levels");
       if (response.statusCode == 200) {
         final data = List<Map<String, dynamic>>.from(response.data);
-        log("Parsed data: $data");
+        // log("Parsed data: $data");
         return data;
       } else {
         log("Failed with status code: ${response.statusCode}");

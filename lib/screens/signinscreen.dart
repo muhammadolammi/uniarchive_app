@@ -32,94 +32,97 @@ class _SigninscreenState extends ConsumerState<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Sign In",
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.black,
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 200,
-              ),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'Enter your email',
+      // appBar: AppBar(
+      //   title: const Text(
+      //     "Sign In",
+      //     style: TextStyle(color: Colors.white),
+      //   ),
+      //   centerTitle: true,
+      //   backgroundColor: Colors.black,
+      // ),
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 200,
                 ),
-              ),
-              TextFormField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'Enter your password',
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    ref
-                        .refresh(signINProvider(SigninParams(
-                      email: emailController.text,
-                      password: passwordController.text,
-                    )).future)
-                        .then((value) {
-                      // Handle success
-                      log("Sign-in successful: $value");
-                      showSnackBar(
-                          content: 'User logged in successfully',
-                          context: context);
-                      Navigator.pushNamed(context, HomeScreen.routeId);
-                      // Navigate or display a success message if needed
-                    }).catchError((error) {
-                      // Check error type and show a user-friendly message
-                      if (error is DioException) {
-                        showSnackBar(
-                            content: 'Dio Error: ${error.message}',
-                            context: context);
-                      } else {
-                        showSnackBar(content: 'Error $error', context: context);
-                      }
-                    });
-                  },
-                  child: const Text("Sign In")),
-
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                children: [
-                  const Text("Don't have an account?"),
-                  const SizedBox(
-                    width: 10,
+                TextFormField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    hintText: 'Enter your email',
                   ),
-                  GestureDetector(
-                      onTap: () {
-                        // Handle navigation or action here
-                        Navigator.pushNamed(context, SignUpScreen.routeId);
-                      },
-                      child: const Text(
-                        "Sign Up",
-                        style: TextStyle(color: Colors.blue),
-                      )),
-                ],
-              ),
-              // ElevatedButton(
-              //     onPressed: () {
-              //       Navigator.pushNamed(context, HomeScreen.routeId);
-              //     },
-              //     child: const Text("Go to Home")),
-            ],
+                ),
+                TextFormField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    hintText: 'Enter your password',
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      ref
+                          .refresh(signINProvider(SigninParams(
+                        email: emailController.text,
+                        password: passwordController.text,
+                      )).future)
+                          .then((value) {
+                        // Handle success
+                        log("Sign-in successful: $value");
+                        showSnackBar(
+                            content: 'User logged in successfully',
+                            context: context);
+                        Navigator.pushNamed(context, HomeScreen.routeId);
+                        // Navigate or display a success message if needed
+                      }).catchError((error) {
+                        // Check error type and show a user-friendly message
+                        if (error is DioException) {
+                          showSnackBar(
+                              content: 'Dio Error: ${error.message}',
+                              context: context);
+                        } else {
+                          showSnackBar(
+                              content: 'Error $error', context: context);
+                        }
+                      });
+                    },
+                    child: const Text("Sign In")),
+
+                const SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  children: [
+                    const Text("Don't have an account?"),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          // Handle navigation or action here
+                          Navigator.pushNamed(context, SignUpScreen.routeId);
+                        },
+                        child: const Text(
+                          "Sign Up",
+                          style: TextStyle(color: Colors.blue),
+                        )),
+                  ],
+                ),
+                // ElevatedButton(
+                //     onPressed: () {
+                //       Navigator.pushNamed(context, HomeScreen.routeId);
+                //     },
+                //     child: const Text("Go to Home")),
+              ],
+            ),
           ),
         ),
       ),

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uniarchive/apis/materials.dart';
 import 'package:uniarchive/providers/provider.dart';
 
 class CoursesDropdown extends ConsumerStatefulWidget {
@@ -12,33 +13,55 @@ class CoursesDropdown extends ConsumerStatefulWidget {
 }
 
 class _CoursesDropdownState extends ConsumerState<CoursesDropdown> {
+  String? selectedCourseId; // Holds the selected course ID
+
   @override
   Widget build(BuildContext context) {
     final courses = ref.watch(currentUserCoursesProvider);
-    String? selectedCourseId; // Holds the selected course ID
-
+    final materialApi = ref.read(materialApiProvider);
     if (courses == null || courses.isEmpty) {
       // Handle the null or empty state
       return const Text("No courses available");
     }
-
-    return DropdownButton(
-      hint: Text('Default'),
-      value: selectedCourseId,
-      isExpanded: true,
-      items: courses.map((course) {
+    final dropdownItems = [
+      DropdownMenuItem<String>(
+        value: 'default',
+        child: const Text('Default'), // Default option displayed text
+      ),
+      ...courses.map((course) {
         return DropdownMenuItem<String>(
-          value: course.id, // Value to be selected
-          child: Text(course.courseCode), // Displayed text
+          value: course.id, // Course ID to be sent to backend
+          child: Text(course.courseCode), // Course name displayed
         );
-      }).toList(),
-      onChanged: (newID) {
-        // Handle change here
-        setState(() {
-          selectedCourseId = newID;
-        });
-        log("Selected ID: $newID");
-      },
+      }),
+    ];
+
+    return Container(
+      margin: const EdgeInsets.only(
+        top: 20,
+      ),
+      child: DropdownButton(
+        hint: const Text('Default'),
+        value: selectedCourseId,
+        isExpanded: true,
+        items: courses.map((course) {
+          return DropdownMenuItem<String>(
+            value: course.id, // Value to be selected
+            child: Text(course.courseCode), // Displayed text
+          );
+        }).toList(),
+        onChanged: (newID) {
+          // Handle change here
+          // get the new materials
+          materialApi.getCourseMaterials(newID ?? "", "").then((materials) {
+            ref.read(currentUserMaterialsProvider.notifier).state = materials;
+          });
+          setState(() {
+            selectedCourseId = newID;
+          });
+          log("Selected ID: $newID");
+        },
+      ),
     );
   }
 }
