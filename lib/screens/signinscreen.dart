@@ -7,6 +7,7 @@ import 'package:uniarchive/apis/auth.dart';
 import 'package:uniarchive/providers/auth.dart';
 import 'package:uniarchive/screens/homescreen.dart';
 import 'package:uniarchive/screens/signup.dart';
+import 'package:uniarchive/screens/uploadscreen.dart';
 import 'package:uniarchive/widgets/showsnackbar.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
@@ -95,7 +96,6 @@ class _SigninscreenState extends ConsumerState<SignInScreen> {
                       });
                     },
                     child: const Text("Sign In")),
-
                 const SizedBox(
                   height: 15,
                 ),
@@ -116,11 +116,11 @@ class _SigninscreenState extends ConsumerState<SignInScreen> {
                         )),
                   ],
                 ),
-                // ElevatedButton(
-                //     onPressed: () {
-                //       Navigator.pushNamed(context, HomeScreen.routeId);
-                //     },
-                //     child: const Text("Go to Home")),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, UploadScreen.routeId);
+                    },
+                    child: const Text("Upload Page")),
               ],
             ),
           ),

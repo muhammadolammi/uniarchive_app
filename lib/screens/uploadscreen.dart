@@ -2,6 +2,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:open_file/open_file.dart';
+import 'package:path/path.dart' as path;
+import 'package:uniarchive/consts.dart';
 
 class UploadScreen extends ConsumerStatefulWidget {
   static String routeId = "uploadRoute";
@@ -20,6 +22,8 @@ class _UploadscreenState extends ConsumerState<UploadScreen> {
         // crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // upload and file preview here
+          Container(),
           Center(
             child: ElevatedButton(
               onPressed: () async {
@@ -35,8 +39,4 @@ class _UploadscreenState extends ConsumerState<UploadScreen> {
       )),
     );
   }
-}
-
-void openFile(PlatformFile file) {
-  OpenFile.open(file.path!);
 }

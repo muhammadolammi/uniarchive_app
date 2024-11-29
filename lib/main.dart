@@ -1,13 +1,21 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uniarchive/consts.dart';
+import 'package:uniarchive/firebase_options.dart';
+import 'package:uniarchive/helpers.dart';
 import 'package:uniarchive/screens/homescreen.dart';
 import 'package:uniarchive/screens/signinscreen.dart';
 import 'package:uniarchive/screens/signup.dart';
+import 'package:uniarchive/screens/uploadscreen.dart';
 
-void main() {
+void main() async {
   // set up dio
   WidgetsFlutterBinding.ensureInitialized();
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp();
+  }
+
   setupDio();
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -23,6 +31,7 @@ class MyApp extends StatelessWidget {
         HomeScreen.routeId: (context) => const HomeScreen(),
         SignInScreen.routeId: (context) => const SignInScreen(),
         SignUpScreen.routeId: (context) => const SignUpScreen(),
+        UploadScreen.routeId: (context) => const UploadScreen(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Uni Archive',

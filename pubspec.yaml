@@ -41,6 +41,12 @@ dependencies:
   cookie_jar: ^3.0.0
   flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1
+  file_picker: ^8.1.4
+  firebase_core: ^3.8.0
+  open_file: ^3.5.10
+  path: ^1.9.0
+  firebase_storage: ^12.3.6
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
