@@ -7,6 +7,7 @@ import 'package:uniarchive/screens/signup.dart';
 
 void main() {
   // set up dio
+  WidgetsFlutterBinding.ensureInitialized();
   setupDio();
   runApp(const ProviderScope(child: MyApp()));
 }

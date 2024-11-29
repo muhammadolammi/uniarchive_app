@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "111654178933",
+    "project_id": "uniarchive-1e8be",
+    "storage_bucket": "uniarchive-1e8be.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111654178933:android:f3df2bd8c6d15d2ad3e83c",
+        "android_client_info": {
+          "package_name": "com.muhammaddev.uniarchive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjwTaull0ZGjPTs-JTNTOIFjB-skTMYy8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
