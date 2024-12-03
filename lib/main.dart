@@ -1,20 +1,25 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uniarchive/consts.dart';
-import 'package:uniarchive/firebase_options.dart';
-import 'package:uniarchive/helpers.dart';
 import 'package:uniarchive/screens/homescreen.dart';
 import 'package:uniarchive/screens/signinscreen.dart';
 import 'package:uniarchive/screens/signup.dart';
 import 'package:uniarchive/screens/uploadscreen.dart';
 
-void main() async {
-  // set up dio
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Firebase.apps.isEmpty) {
-    await Firebase.initializeApp();
-  }
+
+  await Firebase.initializeApp();
+
+  await FirebaseAppCheck.instance.activate(
+      androidProvider:
+          kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity);
+
+  // set up dio
 
   setupDio();
   runApp(const ProviderScope(child: MyApp()));
@@ -23,18 +28,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: {
-        HomeScreen.routeId: (context) => const HomeScreen(),
-        SignInScreen.routeId: (context) => const SignInScreen(),
-        SignUpScreen.routeId: (context) => const SignUpScreen(),
-        UploadScreen.routeId: (context) => const UploadScreen(),
-      },
-      debugShowCheckedModeBanner: false,
+    return MaterialApp.router(
       title: 'Uni Archive',
+      routerConfig: _router,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -57,3 +55,29 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+final GoRouter _router = GoRouter(
+  initialLocation: HomeScreen.routeId,
+  routes: [
+    GoRoute(
+      path: SignInScreen.routeId,
+      builder: (context, state) => const SignInScreen(),
+    ),
+    GoRoute(
+      path: SignUpScreen.routeId,
+      builder: (context, state) => const SignUpScreen(),
+    ),
+    GoRoute(
+      path: HomeScreen.routeId,
+      builder: (context, state) => const HomeScreen(),
+      routes: [
+        // Sub-route for upload
+        GoRoute(
+          path: UploadScreen.routeId, // This becomes '/home/upload'
+          builder: (context, state) => const UploadScreen(),
+        ),
+        // Add more sub-routes here if needed
+      ],
+    ),
+  ],
+);

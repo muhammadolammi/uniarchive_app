@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uniarchive/apis/auth.dart';
 import 'package:uniarchive/providers/auth.dart';
 import 'package:uniarchive/providers/departments.dart';
@@ -14,7 +15,7 @@ import 'package:uniarchive/screens/signinscreen.dart';
 import 'package:uniarchive/widgets/showsnackbar.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
-  static String routeId = 'signUpRoute';
+  static const String routeId = '/signUpRoute';
 
   const SignUpScreen({super.key});
 
@@ -49,10 +50,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     final universities = ref.watch(universityListProvider).asData?.value ?? [];
     final universityID = ref.watch(universityIDProvider);
     // faculty data
-    final facultiesAsyncValue = ref.watch(
-      facultyListProvider(universityID ?? ''),
-    );
-    final faculties = facultiesAsyncValue.asData?.value ??
+    final faculties = ref
+            .watch(
+              facultyListProvider(universityID ?? ''),
+            )
+            .asData
+            ?.value ??
         [
           {"name": "Choose a Faculty"}
         ];
@@ -221,7 +224,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         showSnackBar(
                             content: 'User created successfully',
                             context: context);
-                        Navigator.pushNamed(context, SignInScreen.routeId);
+                        // Navigator.pushNamed(context, SignInScreen.routeId);
+                        context.go(SignInScreen.routeId);
+
                         // Navigate or display a success message if needed
                       }).catchError((error) {
                         // Check error type and show a user-friendly message
@@ -250,7 +255,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     GestureDetector(
                         onTap: () {
                           // Handle navigation or action here
-                          Navigator.pushNamed(context, SignInScreen.routeId);
+                          // Navigator.pushNamed(context, SignInScreen.routeId);
+                          context.go(SignInScreen.routeId);
                         },
                         child: const Text(
                           "Sign In",

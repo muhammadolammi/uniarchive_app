@@ -2,21 +2,24 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uniarchive/apis/auth.dart';
 import 'package:uniarchive/apis/courses.dart';
 import 'package:uniarchive/apis/materials.dart';
+import 'package:uniarchive/main.dart';
 import 'package:uniarchive/models.dart';
 import 'package:uniarchive/providers/courses.dart';
 import 'package:uniarchive/providers/provider.dart';
 import 'package:uniarchive/screens/signinscreen.dart';
 import 'package:uniarchive/screens/signup.dart';
+import 'package:uniarchive/screens/uploadscreen.dart';
 import 'package:uniarchive/widgets/coursesdropdown.dart';
 import 'package:uniarchive/widgets/fileCard.dart';
 import 'package:uniarchive/widgets/profilecard.dart';
 import 'package:uniarchive/widgets/roundformfield.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  static String routeId = '/';
+  static const String routeId = '/';
 
   const HomeScreen({super.key});
 
@@ -61,8 +64,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       });
     }).catchError((e) {
       // Redirect to the SignInScreen if validation fails
+      context.go(SignInScreen.routeId);
 
-      Navigator.pushReplacementNamed(context, SignInScreen.routeId);
+      // Navigator.pushReplacementNamed(context, SignInScreen.routeId);
     });
   }
 
@@ -75,7 +79,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       );
     }
     final currentUser = ref.watch(currentUserProvider);
-    final courses = ref.watch(currentUserCoursesProvider);
+    // final courses = ref.watch(currentUserCoursesProvider);
     final materials = ref.watch(currentUserMaterialsProvider);
 
     return Scaffold(
@@ -100,6 +104,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       //           ),
       //   ),
       // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.go(UploadScreen.routeId);
+        },
+        child: const Icon(Icons.upload),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(20),
@@ -124,9 +134,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(
                 height: 20,
               ),
-              Roundformfield(
-                hintText: "Search here...",
-              ),
+              // Roundformfield(
+              //   hintText: "Search here...",
+              // ),
 
               // Center(
               //     child: Profilecard(
@@ -144,7 +154,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ] // If materials is empty
                         : materials.map((material) {
                             return Filecard(
-                                file:
+                                material:
                                     material); // Assuming you want to show a file card for each material
                           }).toList(),
               ),

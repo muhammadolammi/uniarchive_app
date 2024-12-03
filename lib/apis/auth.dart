@@ -22,10 +22,6 @@ class SignupParams {
   final String departmentID;
   final String levelID;
 
-  final authApiProvider = Provider((ref) {
-    return AuthApi();
-  });
-
   // Constructor to initialize the fields
   SignupParams(
       {required this.email,

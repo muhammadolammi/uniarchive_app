@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uniarchive/apis/auth.dart';
 import 'package:uniarchive/providers/auth.dart';
 import 'package:uniarchive/screens/homescreen.dart';
@@ -11,7 +12,7 @@ import 'package:uniarchive/screens/uploadscreen.dart';
 import 'package:uniarchive/widgets/showsnackbar.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
-  static String routeId = 'signInRoute';
+  static const String routeId = '/signInRoute';
 
   const SignInScreen({super.key});
 
@@ -81,7 +82,9 @@ class _SigninscreenState extends ConsumerState<SignInScreen> {
                         showSnackBar(
                             content: 'User logged in successfully',
                             context: context);
-                        Navigator.pushNamed(context, HomeScreen.routeId);
+                        // Navigator.pushNamed(context, HomeScreen.routeId);
+                        context.go(HomeScreen.routeId);
+
                         // Navigate or display a success message if needed
                       }).catchError((error) {
                         // Check error type and show a user-friendly message
@@ -108,7 +111,8 @@ class _SigninscreenState extends ConsumerState<SignInScreen> {
                     GestureDetector(
                         onTap: () {
                           // Handle navigation or action here
-                          Navigator.pushNamed(context, SignUpScreen.routeId);
+                          // Navigator.pushNamed(context, SignUpScreen.routeId);
+                          context.go(SignUpScreen.routeId);
                         },
                         child: const Text(
                           "Sign Up",
@@ -116,11 +120,12 @@ class _SigninscreenState extends ConsumerState<SignInScreen> {
                         )),
                   ],
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, UploadScreen.routeId);
-                    },
-                    child: const Text("Upload Page")),
+                // ElevatedButton(
+                //     onPressed: () {
+                //       // Navigator.pushNamed(context, UploadScreen.routeId);
+                //       context.go(UploadScreen.routeId);
+                //     },
+                //     child: const Text("Upload Page")),
               ],
             ),
           ),
